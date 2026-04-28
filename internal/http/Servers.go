@@ -1,6 +1,7 @@
 package http
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -11,8 +12,15 @@ type HTTPServer struct {
 	httpHandlers *HTTPHandlers
 }
 
-func NewServer(router string) *HTTPServer {
-	return &HTTPServer{router: mux.NewRouter(), httpHandlers: &HTTPHandlers{}}
+// context(ctx) for database(waitCancel)
+func NewServer(ctx context.Context) (*HTTPServer, error) {
+	handlerHTTP, err := NewHTTPHandlers(ctx)
+
+	if err != nil {
+		return &HTTPServer{}, err
+	}
+
+	return &HTTPServer{router: mux.NewRouter(), httpHandlers: handlerHTTP}, nil
 }
 
 func (s *HTTPServer) StartServer() {

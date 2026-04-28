@@ -6,21 +6,21 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-type database struct {
+type Database struct {
 	conn *pgx.Conn
-	ctx  context.Context
+	ctx  context.Context // special context for database(md waitCancel)
 }
 
 func newConn(ctx context.Context, path string) (*pgx.Conn, error) {
 	return pgx.Connect(ctx, path)
 }
 
-func NewDataBase(ctx context.Context, path string) (*database, error) {
+func NewDataBase(ctx context.Context, path string) (*Database, error) {
 	conn, err := newConn(ctx, path)
 
 	if err != nil {
-		return &database{}, err
+		return &Database{}, err
 	}
 
-	return &database{ctx: ctx, conn: conn}, nil
+	return &Database{ctx: ctx, conn: conn}, nil
 }
