@@ -16,6 +16,7 @@ type HTTPServer struct {
 
 // context(ctx) for database(waitCancel)
 func NewServer(ctx context.Context) (*HTTPServer, error) {
+
 	handlerHTTP, err := NewHTTPHandlers(ctx)
 	if err != nil {
 		return &HTTPServer{}, err
@@ -31,8 +32,8 @@ func (s *HTTPServer) StartServer() error {
 
 	log.Println("Server Started")
 	err := http.ListenAndServe(":8080", s.router)
-	if errors.Is(err, http.ErrServerClosed) {
-		return nil
+	if !errors.Is(err, http.ErrServerClosed) {
+		return err
 	}
-	return err
+	return nil
 }

@@ -18,7 +18,7 @@ type HTTPHandlers struct {
 }
 
 func NewHTTPHandlers(ctx context.Context) (*HTTPHandlers, error) {
-	path := os.Getenv("database_path")
+	path := os.Getenv("CONN_STRING")
 	if path == "" {
 		return &HTTPHandlers{}, errors.ErrEmptyConn
 	}

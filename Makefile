@@ -1,6 +1,9 @@
 include .env
 export
 
+start_prod:
+	@./bin
+
 start-server:
 	@cd cmd && go run main.go
 
